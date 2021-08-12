@@ -12,6 +12,7 @@ import styles from "./LoginPage.module.scss";
 
 export default function LoginPage() {
 
+  const [apiErrors, setApiErrors] = React.useState<string>("");
   const { control, handleSubmit } = useForm<LoginCredentials>({
     defaultValues: {
       email: "",
@@ -29,8 +30,12 @@ export default function LoginPage() {
    * @param {LoginCredentials} data Validated email and password from react-hook-form's handleSubmit function.
    */
   async function login(data: LoginCredentials) {
-    const response = await loginMutation.mutateAsync(data);
-    console.log(response)
+    try {
+      const response = await loginMutation.mutateAsync(data)
+      console.log(response.data)
+    } catch (error) {
+      setApiErrors("Invalid email or password.");
+    }
   }
 
   return (
@@ -78,11 +83,17 @@ export default function LoginPage() {
             render={(renderProps) => (
               <CustomInput<LoginCredentials>
                 {...renderProps}
+                inputType="password"
                 leftIcon={<LockIcon color="gray.700" />}
                 placeholder="Password"
               />
             )}
           />
+          {apiErrors && (
+            <Text fontSize="xs" color="red">
+              {apiErrors}
+            </Text>
+          )}
         </VStack>
         <Button
           size="lg"
