@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, ResponseType } from "axios"
+import axios, { AxiosResponse } from "axios"
 
 import { LoginCredentials } from "../constants"
 
@@ -12,12 +12,12 @@ const API = axios.create({
 function MeldAPI() {
   return {
     fetchDevices: async (): Promise<AxiosResponse<any>> => {
-      const response = await API.get("/devices").catch((err) => console.error(err))
-      return response?.data
+      const response = await API.get("/devices")
+      return response
     },
-    login: async (payload: LoginCredentials): Promise<AxiosResponse<ResponseType>> => {
-      const response = await API.post("/login", payload).catch((err) => console.error(err))
-      return response?.data
+    login: async (payload: LoginCredentials): Promise<AxiosResponse<any>> => {
+      const response = await API.post("/login", payload)
+      return response
     },
   }
 }
