@@ -1,17 +1,18 @@
 import React from 'react'
-import { FormControl, Input, Text, InputGroup, InputLeftElement, InputRightElement, } from "@chakra-ui/react"
-import { CheckIcon } from "@chakra-ui/icons"
+import { FormControl, Input, Text, InputGroup, InputLeftElement } from "@chakra-ui/react"
 
 import { ControllerRenderProps } from "../constants"
 
 type CustomInputProps = {
   leftIcon?: React.ReactNode
   placeholder?: string
+  inputType?: string
 }
 
 export default function CustomInput<T>({
   leftIcon,
   placeholder,
+  inputType,
   field,
   fieldState,
   formState,
@@ -21,10 +22,7 @@ export default function CustomInput<T>({
       <FormControl bgColor="gray.100" isInvalid={fieldState.invalid} isRequired>
         <InputGroup>
           <InputLeftElement pointerEvents="none" children={leftIcon ?? null} />
-          <Input placeholder={placeholder} {...field} />
-          {!fieldState.invalid && fieldState.isDirty && (
-            <InputRightElement children={<CheckIcon color="green.500" />} />
-          )}
+          <Input type={inputType ?? "text"} placeholder={placeholder} {...field} />
         </InputGroup>
       </FormControl>
       {fieldState.invalid && (
