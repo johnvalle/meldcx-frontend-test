@@ -4,6 +4,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { QueryClientProvider, QueryClient } from "react-query";
 
+import { PrivateRoute } from "./components"
 import { theme } from "../src/constants";
 
 import * as Pages from "./pages";
@@ -17,7 +18,8 @@ function App() {
       <ChakraProvider theme={theme}>
         <BrowserRouter>
           <Switch>
-            <Route path="/" component={Pages.LoginPage} />
+            <Route path="/" component={Pages.LoginPage} exact/>
+            <PrivateRoute path="/devices" component={Pages.DevicesPage} />
           </Switch>
         </BrowserRouter>
       </ChakraProvider>
