@@ -10,3 +10,8 @@ export type ControllerRenderProps<T> = {
   fieldState: ControllerFieldState
   formState: UseFormStateReturn<T>
 }
+
+export type AuthStore = {
+  token?: string
+  setToken: (token: string) => void
+}
