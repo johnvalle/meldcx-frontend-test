@@ -17,7 +17,7 @@ const API = axios.create({
  * @returns {Object}
  * @example
  *    MeldAPI.fetchDevices()
- *    MeldAPI.login()
+ *    MeldAPI.login({ email: "test@test.com", password: "Test123!" })
  */
 function MeldAPI() {
   return {
