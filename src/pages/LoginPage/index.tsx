@@ -3,24 +3,29 @@ import React from 'react'
 import { Button, Container, VStack, Text } from "@chakra-ui/react"
 import { Controller, useForm, } from "react-hook-form"
 import { EmailIcon, LockIcon } from "@chakra-ui/icons"
+import { useHistory } from 'react-router-dom';
 // project imports
 import { useLoginMutation } from '../../hooks';
-import { LoginCredentials } from "../../constants"
+import { AuthStore, LoginCredentials } from "../../constants"
 import { CustomInput } from "../../components"
+import { useAuthStore } from "../../stores"
 // local imports
 import styles from "./LoginPage.module.scss";
 
 export default function LoginPage() {
 
+  const loginMutation = useLoginMutation()
+  const [token, setToken] = useAuthStore((state: AuthStore) => [state.token, state.setToken])
+
   const [apiErrors, setApiErrors] = React.useState<string>("");
+
+  const history = useHistory();
   const { control, handleSubmit } = useForm<LoginCredentials>({
     defaultValues: {
       email: "",
       password: ""
     }
   });
-
-  const loginMutation = useLoginMutation();
 
   /**
    * Login function
@@ -30,13 +35,22 @@ export default function LoginPage() {
    * @param {LoginCredentials} data Validated email and password from react-hook-form's handleSubmit function.
    */
   async function login(data: LoginCredentials) {
+    setApiErrors(""); // clear any errors from previous API call
     try {
       const response = await loginMutation.mutateAsync(data)
-      console.log(response.data)
+      const token = response.data;
+      setToken(token);
+      history.push("/devices")
     } catch (error) {
+      console.error(error)
       setApiErrors("Invalid email or password.");
     }
   }
+
+  // if token is persisted in local storage, redirect to devices
+  React.useEffect(() => {
+    if (token) history.push("/devices")
+  }, [token, history])
 
   return (
     <div className={styles.wrapper}>
