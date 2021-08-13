@@ -1,6 +1,6 @@
 // global imports
 import React from "react";
-import { Box, Button, Center, Flex, Text, useBreakpointValue, useToast } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Spinner, Text, useBreakpointValue, useToast } from "@chakra-ui/react";
 // project imports
 import { useFetchDevicesQuery, useNotifyMutation } from "../../hooks";
 import { LogoutConfirmationDialog } from "../../components";
@@ -57,6 +57,11 @@ export default function DevicesPage() {
     }
   }
 
+  /**
+   * Notify function
+   *
+   * Calls notify endpoint and posts notification data.
+   */
   async function notify() {
     try {
       const response = await notifyMutation.mutateAsync({
@@ -96,26 +101,30 @@ export default function DevicesPage() {
     <div className={styles.wrapper}>
       <Flex justifyContent="center" alignItems="center" w="100%" flexGrow={1}>
         <Box>
-          <Box
-            className={styles.orbit__container}
-            ref={container}
-            width={{ base: 200, sm: 250, md: 500 }}
-            height={{ base: 200, sm: 250, md: 500 }}
-            borderRadius="100%"
-          >
-            {!fetchDevicesQuery.isLoading && [...Array.from({ length: size })].map(renderCircles)}
-          </Box>
-          {!fetchDevicesQuery.isLoading && (
-            <Box top={{ base: "-40px", md: "-100px" }} className={styles.centerContainer}>
-              <Text fontSize={{ base: 36, sm: 48, md: 72 }} color="white">
-                {fetchDevicesQuery.data?.data?.devices?.length}
-              </Text>
-              <Text fontSize={{ base: 12, sm: 24 }} fontWeight="bold" color="white">
-                DEVICES
-                <br />
-                ONLINE
-              </Text>
-            </Box>
+          {fetchDevicesQuery.isLoading ? (
+            <Spinner size="xl" color="white" />
+          ) : (
+            <>
+              <Box
+                className={styles.orbit__container}
+                ref={container}
+                borderRadius="100%"
+                width={{ base: 200, sm: 250, md: 500 }}
+                height={{ base: 200, sm: 250, md: 500 }}
+              >
+                {[...Array.from({ length: size })].map(renderCircles)}
+              </Box>
+              <Box top={{ base: "-40px", md: "-100px" }} className={styles.centerContainer}>
+                <Text fontSize={{ base: 36, sm: 48, md: 72 }} color="white">
+                  {size}
+                </Text>
+                <Text fontSize={{ base: 12, sm: 24 }} fontWeight="bold" color="white">
+                  DEVICES
+                  <br />
+                  ONLINE
+                </Text>
+              </Box>
+            </>
           )}
         </Box>
       </Flex>
@@ -131,18 +140,20 @@ export default function DevicesPage() {
           >
             <Button
               width={{ base: 150, md: 200 }}
+              onClick={notify}
+              isLoading={notifyMutation.isLoading}
               size="lg"
               m="0.5rem"
               bgColor="white"
               _hover={{
                 bgColor: "gray.300",
               }}
-              onClick={notify}
             >
               NOTIFY
             </Button>
             <Button
               width={{ base: 150, md: 200 }}
+              onClick={() => setShowDialog(true)}
               size="lg"
               m="0.5rem"
               bgColor="gray.800"
@@ -150,7 +161,6 @@ export default function DevicesPage() {
               _hover={{
                 bgColor: "gray.500",
               }}
-              onClick={() => setShowDialog(true)}
             >
               LOG OUT
             </Button>
