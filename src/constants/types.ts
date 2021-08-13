@@ -5,6 +5,13 @@ export type LoginCredentials = {
   password: string;
 };
 
+export type Notification = {
+  name: string;
+  email: string;
+  repoUrl: string;
+  message: string;
+};
+
 export type ControllerRenderProps<T> = {
   field: UseControllerProps<T>;
   fieldState: ControllerFieldState;
