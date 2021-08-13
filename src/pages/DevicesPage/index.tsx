@@ -1,36 +1,30 @@
 // global imports
-import React from 'react'
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Text,
-  useBreakpointValue
-} from "@chakra-ui/react"
+import React from "react";
+import { Box, Button, Center, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 // project imports
-import { useFetchDevicesQuery } from '../../hooks'
-import { useAuthStore } from "../../stores"
+import { useFetchDevicesQuery } from "../../hooks";
+import { useAuthStore } from "../../stores";
 // local imports
 import styles from "./DevicesPage.module.scss";
-import LogoutConfirmationDialog from '../../components/LogoutConfirmationDialog';
+import LogoutConfirmationDialog from "../../components/LogoutConfirmationDialog";
 
 export default function DevicesPage() {
   const container: React.RefObject<any> = React.useRef(null);
-  const [showDialog, setShowDialog] = React.useState(false)
-  const [size, setSize] = React.useState(0)
+  const [showDialog, setShowDialog] = React.useState(false);
+  const [size, setSize] = React.useState(0);
 
-  const fetchDevicesQuery = useFetchDevicesQuery()
-  const setToken = useAuthStore((state) => state.setToken)
+  const fetchDevicesQuery = useFetchDevicesQuery();
+  const setToken = useAuthStore((state) => state.setToken);
 
-  const circleSize = useBreakpointValue({ base: "30px", sm: "40px", md: "90px" })
-  let angle = 360 - 90
-  let sizeBasedAdjustment = 360 / size
+  const circleSize = useBreakpointValue({ base: "30px", sm: "40px", md: "90px" });
+  let angle = 360 - 90;
+  let sizeBasedAdjustment = 360 / size;
+
   /**
    * Render circle based on number of devices
    */
   function renderCircles() {
-    angle += sizeBasedAdjustment
+    angle += sizeBasedAdjustment;
     return (
       <Box
         key={angle}
@@ -42,30 +36,30 @@ export default function DevicesPage() {
           transform: `rotate(${angle}deg) translate(0, -${container?.current?.clientWidth / 2}px) rotate(-${angle}deg)`,
         }}
       ></Box>
-    )
+    );
   }
 
   /**
    * Handles dialog button actions
-   * 
+   *
    * @param action Action from dialog button: confirm or close
    */
   function handleButtonClick(action: string) {
     if (action === "confirm") {
-      setToken(undefined)
+      setToken(undefined);
     }
 
     if (action === "close") {
-      setShowDialog(false)
+      setShowDialog(false);
     }
   }
 
   React.useEffect(() => {
     if (!fetchDevicesQuery.isLoading) {
-      const { devices } = fetchDevicesQuery.data?.data
-      setSize(devices?.length)
+      const { devices } = fetchDevicesQuery.data?.data;
+      setSize(devices?.length);
     }
-  }, [fetchDevicesQuery.data, fetchDevicesQuery.isLoading])
+  }, [fetchDevicesQuery.data, fetchDevicesQuery.isLoading]);
 
   return (
     <div className={styles.wrapper}>
@@ -132,5 +126,5 @@ export default function DevicesPage() {
         </Center>
       </Box>
     </div>
-  )
+  );
 }

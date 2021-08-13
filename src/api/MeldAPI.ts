@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from "axios"
+import axios, { AxiosResponse } from "axios";
 
-import { LoginCredentials } from "../constants"
+import { LoginCredentials } from "../constants";
 
 // Initialize API variable by creating new Axios Instance
 const API = axios.create({
@@ -8,7 +8,7 @@ const API = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-})
+});
 
 /**
  * MeldAPI Endpoint
@@ -22,14 +22,14 @@ const API = axios.create({
 function MeldAPI() {
   return {
     fetchDevices: async (): Promise<AxiosResponse<any>> => {
-      const response = await API.get("/devices")
-      return response
+      const response = await API.get("/devices");
+      return response;
     },
     login: async (payload: LoginCredentials): Promise<AxiosResponse<any>> => {
-      const response = await API.post("/login", payload)
-      return response
+      const response = await API.post("/login", payload);
+      return response;
     },
-  }
+  };
 }
 
-export default MeldAPI()
+export default MeldAPI();

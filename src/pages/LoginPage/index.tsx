@@ -1,21 +1,20 @@
 // third-party imports
-import React from 'react'
-import { Button, Container, VStack, Text, Box } from "@chakra-ui/react"
-import { Controller, useForm, } from "react-hook-form"
-import { EmailIcon, LockIcon } from "@chakra-ui/icons"
-import { useHistory } from 'react-router-dom';
+import React from "react";
+import { Button, Container, VStack, Text, Box } from "@chakra-ui/react";
+import { Controller, useForm } from "react-hook-form";
+import { EmailIcon, LockIcon } from "@chakra-ui/icons";
+import { useHistory } from "react-router-dom";
 // project imports
-import { useLoginMutation } from '../../hooks';
-import { AuthStore, LoginCredentials } from "../../constants"
-import { CustomInput } from "../../components"
-import { useAuthStore } from "../../stores"
+import { useLoginMutation } from "../../hooks";
+import { AuthStore, LoginCredentials } from "../../constants";
+import { CustomInput } from "../../components";
+import { useAuthStore } from "../../stores";
 // local imports
 import styles from "./LoginPage.module.scss";
 
 export default function LoginPage() {
-
-  const loginMutation = useLoginMutation()
-  const [token, setToken] = useAuthStore((state: AuthStore) => [state.token, state.setToken])
+  const loginMutation = useLoginMutation();
+  const [token, setToken] = useAuthStore((state: AuthStore) => [state.token, state.setToken]);
 
   const [apiErrors, setApiErrors] = React.useState<string>("");
 
@@ -23,24 +22,24 @@ export default function LoginPage() {
   const { control, handleSubmit } = useForm<LoginCredentials>({
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   });
 
   /**
    * Login function
-   * 
+   *
    * Accepts validated email and password from react hook form and sends to API using custom hook (useLoginMutation).
-   * 
+   *
    * @param {LoginCredentials} data Validated email and password from react-hook-form's handleSubmit function.
    */
   async function login(data: LoginCredentials) {
     setApiErrors(""); // clear any errors from previous API call
     try {
-      const response = await loginMutation.mutateAsync(data)
+      const response = await loginMutation.mutateAsync(data);
       const token = response.data;
       setToken(token);
-      history.push("/devices")
+      history.push("/devices");
     } catch (error) {
       setApiErrors("You have entered an incorrect password.");
     }
@@ -48,8 +47,8 @@ export default function LoginPage() {
 
   // if token is persisted in local storage, redirect to devices
   React.useEffect(() => {
-    if (token) history.push("/devices")
-  }, [token, history])
+    if (token) history.push("/devices");
+  }, [token, history]);
 
   return (
     <Box p="1rem" className={styles.wrapper}>
@@ -120,5 +119,5 @@ export default function LoginPage() {
         </Button>
       </Container>
     </Box>
-  )
+  );
 }

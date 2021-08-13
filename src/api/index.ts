@@ -1,1 +1,1 @@
-export { default as MeldAPI } from "./MeldAPI"
+export { default as MeldAPI } from "./MeldAPI";

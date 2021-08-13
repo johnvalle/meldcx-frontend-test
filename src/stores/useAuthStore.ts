@@ -1,7 +1,7 @@
-import create from "zustand"
-import { persist } from "zustand/middleware"
+import create from "zustand";
+import { persist } from "zustand/middleware";
 
-import { AuthStore } from "../constants"
+import { AuthStore } from "../constants";
 
 const useAuthStore = create<AuthStore>(
   persist(
@@ -14,6 +14,6 @@ const useAuthStore = create<AuthStore>(
       getStorage: () => localStorage,
     }
   )
-)
+);
 
-export default useAuthStore
+export default useAuthStore;

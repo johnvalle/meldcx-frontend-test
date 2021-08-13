@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -7,15 +7,15 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   Button,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
 
 type LogoutConfirmationDialogProps = {
   isOpen: boolean;
   onButtonClick: (action: string) => void;
-}
+};
 
 export default function LogoutConfirmationDialog({ isOpen, onButtonClick }: LogoutConfirmationDialogProps) {
-  const cancelRef: React.RefObject<any> = React.useRef()
+  const cancelRef: React.RefObject<any> = React.useRef();
 
   return (
     <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={() => onButtonClick("close")}>
@@ -38,5 +38,5 @@ export default function LogoutConfirmationDialog({ isOpen, onButtonClick }: Logo
         </AlertDialogContent>
       </AlertDialogOverlay>
     </AlertDialog>
-  )
+  );
 }

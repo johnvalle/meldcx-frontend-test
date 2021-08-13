@@ -1,2 +1,2 @@
-export { default as CustomInput } from "./CustomInput"
-export { default as PrivateRoute } from "./PrivateRoute"
+export { default as CustomInput } from "./CustomInput";
+export { default as PrivateRoute } from "./PrivateRoute";

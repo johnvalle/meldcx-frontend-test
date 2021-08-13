@@ -1,13 +1,13 @@
-import React from 'react'
-import { FormControl, Input, Text, InputGroup, InputLeftElement } from "@chakra-ui/react"
+import React from "react";
+import { FormControl, Input, Text, InputGroup, InputLeftElement } from "@chakra-ui/react";
 
-import { ControllerRenderProps } from "../constants"
+import { ControllerRenderProps } from "../constants";
 
 type CustomInputProps = {
-  leftIcon?: React.ReactNode
-  placeholder?: string
-  inputType?: string
-}
+  leftIcon?: React.ReactNode;
+  placeholder?: string;
+  inputType?: string;
+};
 
 export default function CustomInput<T>({
   leftIcon,
@@ -31,5 +31,5 @@ export default function CustomInput<T>({
         </Text>
       )}
     </>
-  )
+  );
 }
