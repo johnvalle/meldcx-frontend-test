@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 
 import { LoginCredentials, Notification } from "../constants";
-import { useAuthStore } from "../stores";
+import useAuthStore from "../stores/useAuthStore";
 
 // Initialize API variable by creating new Axios Instance
 const API = axios.create({
