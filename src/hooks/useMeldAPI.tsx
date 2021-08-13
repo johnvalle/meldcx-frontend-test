@@ -2,6 +2,10 @@ import { useQuery, useMutation } from "react-query";
 
 import { MeldAPI } from "../api";
 
+export function useNotifyMutation() {
+  return useMutation("notify", MeldAPI.notify);
+}
+
 /**
  * Custom useMutation hook for posting data to login endpoint
  */
