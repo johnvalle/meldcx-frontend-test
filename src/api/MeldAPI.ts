@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
 import { LoginCredentials, Notification } from "../constants";
-import useAuthStore from "../stores/useAuthStore";
 
 // Initialize API variable by creating new Axios Instance
 const API = axios.create({
@@ -27,9 +26,6 @@ const API = axios.create({
  *    })
  */
 function MeldAPI() {
-  // token from localStorage
-  const token = useAuthStore.getState().token;
-
   return {
     fetchDevices: async (): Promise<AxiosResponse<any>> => {
       const response = await API.get("/devices");
@@ -39,7 +35,7 @@ function MeldAPI() {
       const response = await API.post("/login", payload);
       return response;
     },
-    notify: async (payload: Notification): Promise<AxiosResponse<any>> => {
+    notify: async (payload: Notification, token: string | undefined): Promise<AxiosResponse<any>> => {
       const response = await API.post("/notify", payload, {
         headers: {
           Authorization: `Bearer ${token}`,
