@@ -1,9 +1,12 @@
 import { useQuery, useMutation } from "react-query";
 
 import { MeldAPI } from "../api";
+import { Notification } from "../constants";
+import { useAuthStore } from "../stores";
 
 export function useNotifyMutation() {
-  return useMutation("notify", MeldAPI.notify);
+  const token = useAuthStore((state) => state.token);
+  return useMutation("notify", (payload: Notification) => MeldAPI.notify(payload, token));
 }
 
 /**
