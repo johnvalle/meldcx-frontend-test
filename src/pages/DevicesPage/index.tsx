@@ -1,21 +1,24 @@
 // global imports
 import React from "react";
-import { Box, Button, Center, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, Text, useBreakpointValue, useToast } from "@chakra-ui/react";
 // project imports
-import { useFetchDevicesQuery } from "../../hooks";
+import { useFetchDevicesQuery, useNotifyMutation } from "../../hooks";
+import { LogoutConfirmationDialog } from "../../components";
 import { useAuthStore } from "../../stores";
 // local imports
 import styles from "./DevicesPage.module.scss";
-import LogoutConfirmationDialog from "../../components/LogoutConfirmationDialog";
 
 export default function DevicesPage() {
   const container: React.RefObject<any> = React.useRef(null);
   const [showDialog, setShowDialog] = React.useState(false);
   const [size, setSize] = React.useState(0);
 
+  const toast = useToast();
+  const notifyMutation = useNotifyMutation();
   const fetchDevicesQuery = useFetchDevicesQuery();
   const setToken = useAuthStore((state) => state.setToken);
 
+  // Circle measurements
   const circleSize = useBreakpointValue({ base: "30px", sm: "40px", md: "90px" });
   let angle = 360 - 90;
   let sizeBasedAdjustment = 360 / size;
@@ -51,6 +54,34 @@ export default function DevicesPage() {
 
     if (action === "close") {
       setShowDialog(false);
+    }
+  }
+
+  async function notify() {
+    try {
+      const response = await notifyMutation.mutateAsync({
+        name: "John Valle",
+        email: "vallejohn.personal@gmail.com",
+        repoUrl: "https://github.com/johnvalle/meldcx-frontend-test",
+        message: "What a pun-tastic message!",
+      });
+      toast({
+        title: "Success!",
+        description: response.data,
+        status: "success",
+        duration: 3000,
+        position: "top",
+        isClosable: true,
+      });
+    } catch ({ response }) {
+      toast({
+        title: "Oh no!",
+        description: response.data,
+        status: "error",
+        duration: 3000,
+        position: "top",
+        isClosable: true,
+      });
     }
   }
 
@@ -106,6 +137,7 @@ export default function DevicesPage() {
               _hover={{
                 bgColor: "gray.300",
               }}
+              onClick={notify}
             >
               NOTIFY
             </Button>
