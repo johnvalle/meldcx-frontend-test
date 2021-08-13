@@ -13,5 +13,5 @@ export type ControllerRenderProps<T> = {
 
 export type AuthStore = {
   token?: string
-  setToken: (token: string) => void
+  setToken: (token: string | undefined) => void
 }
