@@ -7,7 +7,7 @@ const useAuthStore = create<AuthStore>(
   persist(
     (set) => ({
       token: "",
-      setToken: (token: string) => set({ token }),
+      setToken: (token: string | undefined) => set({ token }),
     }),
     {
       name: "meldToken",
