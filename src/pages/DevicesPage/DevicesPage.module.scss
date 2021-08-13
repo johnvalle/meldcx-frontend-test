@@ -1,0 +1,50 @@
+.wrapper {
+  height: 100vh;
+  background-color: #E96C3E;
+
+  .orbit {
+
+    &__container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      width: 500px;
+      height: 500px;
+      border-radius: 100%;
+      -webkit-animation: spin-right 10s linear infinite;
+      animation: spin-right 10s linear infinite;
+    }
+
+    &__circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 100%;
+      background-color: white;
+    }
+  }
+
+  .centerContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 180px;
+    height: 180px;
+    text-align: center;
+  }
+}
+
+@keyframes spin-right {
+  from {
+      transform: rotate(0deg);
+  }
+  to { 
+      transform: rotate(360deg);
+  }
+}
