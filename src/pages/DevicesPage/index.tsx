@@ -4,8 +4,9 @@ import {
   Box,
   Button,
   Center,
-  HStack,
+  Flex,
   Text,
+  useBreakpointValue
 } from "@chakra-ui/react"
 // project imports
 import { useFetchDevicesQuery } from '../../hooks'
@@ -15,32 +16,32 @@ import styles from "./DevicesPage.module.scss";
 import LogoutConfirmationDialog from '../../components/LogoutConfirmationDialog';
 
 export default function DevicesPage() {
+  const container: React.RefObject<any> = React.useRef(null);
   const [showDialog, setShowDialog] = React.useState(false)
   const [size, setSize] = React.useState(0)
 
   const fetchDevicesQuery = useFetchDevicesQuery()
   const setToken = useAuthStore((state) => state.setToken)
 
-  const circleSize = 100
+  const circleSize = useBreakpointValue({ base: "30px", sm: "40px", md: "90px" })
   let angle = 360 - 90
   let sizeBasedAdjustment = 360 / size
-  let containerSize = 250
-
   /**
    * Render circle based on number of devices
    */
   function renderCircles() {
     angle += sizeBasedAdjustment
     return (
-      <div
+      <Box
+        key={angle}
         className={styles.orbit__circle}
         style={{
-          height: `${circleSize}px`,
-          width: `${circleSize}px`,
-          margin: `calc(-${circleSize}px/2)`,
-          transform: `rotate(${angle}deg) translate(0, -${containerSize}px) rotate(-${angle}deg)`,
+          height: circleSize,
+          width: circleSize,
+          margin: `calc(-${circleSize}/2)`,
+          transform: `rotate(${angle}deg) translate(0, -${container?.current?.clientWidth / 2}px) rotate(-${angle}deg)`,
         }}
-      ></div>
+      ></Box>
     )
   }
 
@@ -64,44 +65,70 @@ export default function DevicesPage() {
       const { devices } = fetchDevicesQuery.data?.data
       setSize(devices?.length)
     }
-  }, [fetchDevicesQuery])
+  }, [fetchDevicesQuery.data, fetchDevicesQuery.isLoading])
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.orbit__container}>
-        {!fetchDevicesQuery.isLoading && [...Array.from({ length: size })].map(renderCircles)}
-      </div>
-
-      {!fetchDevicesQuery.isLoading && (
-        <div className={styles.centerContainer}>
-          <Text fontSize={72} color="white">
-            {fetchDevicesQuery.data?.data?.devices?.length}
-          </Text>
-          <Text color="white" fontWeight="bold">
-            DEVICES
-            <br />
-            ONLINE
-          </Text>
-        </div>
-      )}
+      <Flex justifyContent="center" alignItems="center" w="100%" flexGrow={1}>
+        <Box>
+          <Box
+            className={styles.orbit__container}
+            ref={container}
+            width={{ base: 200, sm: 250, md: 500 }}
+            height={{ base: 200, sm: 250, md: 500 }}
+            borderRadius="100%"
+          >
+            {!fetchDevicesQuery.isLoading && [...Array.from({ length: size })].map(renderCircles)}
+          </Box>
+          {!fetchDevicesQuery.isLoading && (
+            <Box top={{ base: "-40px", md: "-100px" }} className={styles.centerContainer}>
+              <Text fontSize={{ base: 36, sm: 48, md: 72 }} color="white">
+                {fetchDevicesQuery.data?.data?.devices?.length}
+              </Text>
+              <Text fontSize={{ base: 12, sm: 24 }} fontWeight="bold" color="white">
+                DEVICES
+                <br />
+                ONLINE
+              </Text>
+            </Box>
+          )}
+        </Box>
+      </Flex>
       <LogoutConfirmationDialog isOpen={showDialog} onButtonClick={handleButtonClick} />
-      <Box bottom={0} position="absolute" w="100%" bgColor="#D76845">
+      <Box bottom={0} mt="auto" w="100%" bgColor="#D76845">
         <Center>
-          <HStack p="1.5rem">
-            <Button size="lg" w={200} mx="auto" bgColor="white">
+          <Flex
+            height={100}
+            spacing="2rem"
+            flexDir={{ base: "column", md: "row" }}
+            alignItems="center"
+            justifyContent="center"
+          >
+            <Button
+              width={{ base: 150, md: 200 }}
+              size="lg"
+              m="0.5rem"
+              bgColor="white"
+              _hover={{
+                bgColor: "gray.300",
+              }}
+            >
               NOTIFY
             </Button>
             <Button
+              width={{ base: 150, md: 200 }}
               size="lg"
-              w={200}
-              mx="auto"
+              m="0.5rem"
               bgColor="gray.800"
               textColor="white"
+              _hover={{
+                bgColor: "gray.500",
+              }}
               onClick={() => setShowDialog(true)}
             >
               LOG OUT
             </Button>
-          </HStack>
+          </Flex>
         </Center>
       </Box>
     </div>

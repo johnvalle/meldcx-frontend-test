@@ -1,6 +1,6 @@
 // third-party imports
 import React from 'react'
-import { Button, Container, VStack, Text } from "@chakra-ui/react"
+import { Button, Container, VStack, Text, Box } from "@chakra-ui/react"
 import { Controller, useForm, } from "react-hook-form"
 import { EmailIcon, LockIcon } from "@chakra-ui/icons"
 import { useHistory } from 'react-router-dom';
@@ -42,7 +42,6 @@ export default function LoginPage() {
       setToken(token);
       history.push("/devices")
     } catch (error) {
-      console.error(error)
       setApiErrors("You have entered an incorrect password.");
     }
   }
@@ -53,10 +52,10 @@ export default function LoginPage() {
   }, [token, history])
 
   return (
-    <div className={styles.wrapper}>
+    <Box p="1rem" className={styles.wrapper}>
       <Container
         bgColor="white"
-        p="16"
+        p="2rem"
         borderRadius="8"
         boxShadow="lg"
         minHeight="400"
@@ -120,6 +119,6 @@ export default function LoginPage() {
           Login
         </Button>
       </Container>
-    </div>
+    </Box>
   )
 }
