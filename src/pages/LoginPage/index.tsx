@@ -43,7 +43,7 @@ export default function LoginPage() {
       history.push("/devices")
     } catch (error) {
       console.error(error)
-      setApiErrors("Invalid email or password.");
+      setApiErrors("You have entered an incorrect password.");
     }
   }
 
